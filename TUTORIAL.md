@@ -95,40 +95,60 @@ This plan is designed to be executed by an AI assistant.
 cargo new calculator_cli
 ```
 
-### ステップ5: 四則演算の実装
+### ステップ5: 四則演算の実装 (完了)
 
-`calculator_cli/src/main.rs` を編集し、固定値（10と5）で四則演算を行う基本的なプログラムを作成しました。
+`calculator_cli/src/lib.rs` に四則演算を行う関数を実装しました。初期の固定値での実装から、引数を受け取る形に進化しました。
 
-1.  **ソースコード**:
-    ```rust
-    fn main() {
-        let a = 10;
-        let b = 5;
-
-        // 足し算, 引き算, 掛け算, 割り算...
-        println!("{} + {} = {}", a, b, a + b);
-        println!("{} - {} = {}", a, b, a - b);
-        println!("{} * {} = {}", a, b, a * b);
-        println!("{} / {} = {}", a, b, a / b);
-    }
-    ```
+1.  **ソースコードの概要**:
+    `src/lib.rs` に `calculate` 関数を定義し、加算、減算、乗算、除算のロジックをカプセル化しました。
 
 2.  **実行と確認**:
     `cargo run` でプログラムを実行し、正しい計算結果が表示されることを確認しました。
 
-    ```bash
-    cd calculator_cli
-    cargo run
-    ```
+### ステップ6: コマンドライン引数のパース (完了)
 
-### ステップ6: 進捗のプッシュ
+`clap` クレートを導入し、コマンドライン引数から数値と演算子を受け取れるようにしました。
 
-ここまでの全作業（`GEMINI.md`の更新、`TUTORIAL.md`の作成、`calculator_cli`プロジェクト）をGitHubにコミットし、プッシュしました。
+1.  **`Cargo.toml` の更新**:
+    `clap = { version = "4.5.40", features = ["derive"] }` を追加しました。
+
+2.  **`src/main.rs` の実装**:
+    `Args` 構造体を定義し、`clap::Parser` を使って引数をパースし、`calculate` 関数に渡すようにしました。
+
+3.  **実行例**:
+    `cargo run -- 10 + 5` のように実行し、結果を確認しました。
+
+### ステップ7: リファクタリングとエラーハンドリング (完了)
+
+コードをより論理的なモジュールに整理し、無効な入力（非数値、ゼロ除算、無効な演算子）に対する堅牢なエラーハンドリングを実装しました。
+
+1.  **モジュール化**:
+    計算ロジックを `src/lib.rs` に移動し、`src/main.rs` から呼び出すようにしました。
+
+2.  **エラーハンドリング**:
+    `calculate` 関数が `Result<f64, String>` を返すように変更し、エラーメッセージをユーザーフレンドリーな形式で表示するようにしました。
+
+3.  **実行例**:
+    `cargo run -- 10 x 5` や `cargo run -- 10 / 0` のような無効な入力で、適切なエラーメッセージが表示されることを確認しました。
+
+### ステップ8: テストの追加 (完了)
+
+計算ロジックの正確性を保証するために、`src/lib.rs` にユニットテストを追加しました。
+
+1.  **テスト��ード**:
+    `#[cfg(test)]` モジュール内に、加算、減算、乗算、除算、ゼロ除算、無効な演算子などのケースをカバーするテスト関数を記述しました。
+
+2.  **テストの実行**:
+    `cargo test` コマンドを実行し、すべてのテストがパスすることを確認しました。
+
+### ステップ9: 進捗のプッシュ (完了)
+
+ここまでの全作業（`GEMINI.md`と`TUTORIAL.md`の更新、`calculator_cli`プロジェクトの全実装）をGitHubにコミットし、プッシュしました。
 
 ```bash
 git add .
-git commit -m "feat: Set up Rust project and create tutorial"
+git commit -m "feat: Complete CLI calculator implementation and update documentation"
 git push origin master
 ```
 
-これで、プロジェクトの初期設定と最初の実装が完了し、その全履歴が記録されました。
+これで、CLI電卓アプリケーションの全開発が完了し、その全履歴がGitHubに記録されました.
